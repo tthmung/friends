@@ -1,0 +1,109 @@
+.app {
+  font-family: sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  height: 100vh;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+
+.img1 {
+  background: url("../images/mi_in_night.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.img2 {
+  background: url("../images/mi_in_snow.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.button-container1 {
+  text-align: end;
+}
+
+.login-form {
+  background-color: white;
+  padding: 1rem;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  width: 25%;
+  opacity: 80%;
+}
+
+.list-container {
+  display: flex;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+}
+
+.title {
+  font-size: 25px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.big-button {
+  background-color: #ffcc00;
+  color: black;
+  font-size: medium;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+}
+
+input[type="submit"]:hover {
+  background: #6cf0c2;
+}
+
+
+.big-button:hover {
+  background: #6cf0c2;
+}
+
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+  position: relative;
+}
+
+.img-front {
+  image-rendering: -webkit-optimize-contrast;
+  width: 40%;
+}
+
+h4 {
+  text-align: center;
+  color: red;
+  text-decoration: solid;
+}
