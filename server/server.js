@@ -1,46 +1,54 @@
 const express = require("express");
 const session = require("express-session");
 const bodyParser = require("body-parser");
-var cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 const cors = require("cors");
 const mysql = require("mysql");
 const app = express();
 
 // Using localhost for MysQL.
 // Does not need much security or privacy for demo purposes.
-var con = mysql.createPool({
+var con = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
   database: 'friend_zone'
 });
 
+const cookieAge = 1000 * 60 * 60 * 24; // 24 hours
 
 app.use(cookieParser());
-app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+app.set('trust proxy', 1);
 
 app.use(session({
+  name: 'friend_zone',
 	secret: 'secret',
+  proxy: true,
 	resave: false,
-	saveUninitialized: true,
+	saveUninitialized: false,
   cookie: {
-    maxAge: 900000,
-    secure: false,
-    user: '',
-    name: '',
-    admin: false
+    sameSite: true,
+    secure: 'auto',
+    age: cookieAge,
   }
 }))
 
+app.use(cors({
+  origin: 'http://localhost:3000',
+  method: ['POST', 'PUT', 'OPTIONS', 'GET', 'HEAD'],
+  credentials: true
+}));
+
 app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
 
+// Sign Up
 app.post('/api/register', (req, res) => {
   const email = req.body.email;
   const name = req.body.name;
@@ -54,7 +62,8 @@ app.post('/api/register', (req, res) => {
   });
 });
 
-app.post('/api/auth', (req, rep) =>  {
+// Login
+app.post('/api/login', function(req, res) {
 
   const email = req.body.email;
   const password = req.body.password;
@@ -66,25 +75,41 @@ app.post('/api/auth', (req, rep) =>  {
       if (err) throw err;
 
       if (result.length > 0) {
-        req.session.cookie.email = result[0].email;
-        req.session.cookie.name = result[0].name;
-        req.session.cookie.admin = result[0].admin;
+        const sessionUser = {
+          email: result[0].email,
+          name: result[0].name,
+          admin: result[0].admin
+        }
+
+        req.session.user = sessionUser;
 
         req.session.save();
-        console.log('Login: ', req.session.cookie);
-        rep.send({result});
+
+        console.log(req.session);
+        res.send({result: result});
       } else {
-        rep.send({message: "Wrong username or password"});
+        res.send({message: "Wrong username or password"});
       }
     });
 
   }
 });
 
-app.get('/api/auth', (req, rep) => {
-  console.log('main', req.session.cookie)
-  if (req.session.cookie.name) {
-    rep.send({message: "Hello World"})
+// Logout
+app.get('/api/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return console.log(err);
+    }
+  });
+});
+
+app.get('/api/main', function(req, res) {
+  console.log('main: ', req.session.user)
+  req.session.isAuth = true;
+  res.write('Hello');
+  if (req.session.user) {
+    res.send({message: "Hello World"});
   }
 });
 

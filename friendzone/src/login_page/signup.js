@@ -59,7 +59,7 @@ export default function SignUp(){
         password: password,
         name: name,
         introduction: introduction
-      }).then((err) => {
+      }, {withCredentials: true}).then((err) => {
         console.log(err);
       });
 

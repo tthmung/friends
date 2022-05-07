@@ -17,11 +17,10 @@ export default function Login(){
   const login = (e) => {
     e.preventDefault();
 
-    Axios.post('http://127.0.0.1:8080/api/auth', {
+    Axios.post('http://127.0.0.1:8080/api/login', {
       email: email,
       password: password
-    }).then((response) => {
-      console.log(response);
+    }, {withCredentials: true}).then((response) => {
       if (response.data.message) {
         setErrorMessage(response.data.message);
       }
