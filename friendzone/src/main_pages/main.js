@@ -6,40 +6,37 @@ import NavigationBar from './Navbar';
 
 import "./main.css";
 
-export default function Main(){
+export default function Main() {
 
-    // const [userData, setUserData] = useState("");
-    // const navigate = useNavigate();
-    // useEffect(() => {
-    //     console.log("navigate");
-    //     authinfo();
-    //   }, []);
+    const [userData, setUserData] = useState();
+    const [emailData, setEmailData] = useState();
+    const [admin, setAdmin] = useState(false);
+    const navigate = useNavigate();
 
-    //   const authinfo = () => {
-    //     Axios.get('http://127.0.0.1:8080/api/main', {withCredentials: true}).then((response) => {
-    //         console.log(response);
-    //         if (response.data) {
-    //             setUserData(response.data.user.name);
-    //         } else {
-    //             console.log("ERROR USER NOT LOG IN");
-    //         }
-    //     })
-    //   }
+    useEffect(() => {
+        if (!userData) {
+            authinfo();
+        }
+    }, []);
 
-    const [isOpen, setIsOpen] = React.useState(false)
-    const toggleDrawer = () => {
-        setIsOpen((prevState) => !prevState)
+    const authinfo = () => {
+    Axios.get('http://127.0.0.1:8080/api/main', {withCredentials: true}).then((response) => {
+        if (response.data.result) {
+            setEmailData(response.data.result.email);
+            setUserData(response.data.result.name);
+            setAdmin(response.data.result.admin);
+        } else {
+            console.log("ERROR USER NOT LOG IN");
+            navigate('/');
+        }
+    })
     }
 
     return (
         <>
-        <div className="">
-            <NavigationBar admin={false} />
-        </div>
-            {/* <button onClick={toggleDrawer}>Show</button>
-            <Drawer open={isOpen} onClose={toggleDrawer} direction='left' className='bla bla bla'>
-                <div>Hello World</div>
-            </Drawer> */}
+            <div className="">
+                <NavigationBar admin={admin} user={userData} email={emailData} />
+            </div>
         </>
     )
 }

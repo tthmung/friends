@@ -5,7 +5,7 @@ import "./style.css";
 import logo from '../images/MichiganTech_Vertical_OneColor_Black.png';
 
 
-export default function Login(){
+export default function Login() {
 
   // React States
   const [email, setEmail] = useState('');
@@ -20,7 +20,7 @@ export default function Login(){
     Axios.post('http://127.0.0.1:8080/api/login', {
       email: email,
       password: password
-    }, {withCredentials: true}).then((response) => {
+    }, { withCredentials: true }).then((response) => {
       if (response.data.message) {
         setErrorMessage(response.data.message);
       }

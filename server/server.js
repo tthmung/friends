@@ -5,15 +5,19 @@ const cookieParser = require('cookie-parser');
 const cors = require("cors");
 const mysql = require("mysql");
 const app = express();
+const db = require('./db');
 
-// Using localhost for MysQL.
-// Does not need much security or privacy for demo purposes.
-var con = mysql.createConnection({
+const mysqlStore = require('express-mysql-session')(session);
+
+const options ={
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'friend_zone'
-});
+  database: 'session_storage',
+  createDatabaseTable: true
+}
+
+const  sessionStore = new mysqlStore(options);
 
 const cookieAge = 1000 * 60 * 60 * 24; // 24 hours
 
@@ -23,23 +27,22 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.set('trust proxy', 1);
 
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
+
 app.use(session({
   name: 'friend_zone',
 	secret: 'secret',
-  proxy: true,
 	resave: false,
 	saveUninitialized: false,
+  store: sessionStore,
   cookie: {
     sameSite: true,
-    secure: 'auto',
+    secure: false,
     age: cookieAge,
   }
-}))
-
-app.use(cors({
-  origin: 'http://localhost:3000',
-  method: ['POST', 'PUT', 'OPTIONS', 'GET', 'HEAD'],
-  credentials: true
 }));
 
 app.use(function(req, res, next) {
@@ -48,55 +51,51 @@ app.use(function(req, res, next) {
   next();
 });
 
+// Unsafe but session is not saving for some reasons.
+let conn;
+
 // Sign Up
-app.post('/api/register', (req, res) => {
+app.post('/api/register', async (req, res) => {
   const email = req.body.email;
   const name = req.body.name;
   const introduction = req.body.introduction;
   const password = req.body.password;
 
-  con.query("INSERT INTO users(email, password, name, introduction) VALUES (?, SHA2(?, 256), ?, ?)",
-  [email, password, name, introduction],
-  (err, result) => {
-    console.log(err);
-  });
+  await db.register(email, password, name, introduction);
 });
 
 // Login
-app.post('/api/login', function(req, res) {
+app.post('/api/login', async (req, res, next) => {
+  try {
+    const email = req.body.email;
+    const password = req.body.password;
 
-  const email = req.body.email;
-  const password = req.body.password;
-  if (email && password) {
-    con.query('SELECT * FROM users WHERE email = ? AND password = SHA2(?, 256)', [
-      email,
-      password
-    ], (err, result) => {
-      if (err) throw err;
+    user = await db.checkUser(email, password);
 
-      if (result.length > 0) {
-        const sessionUser = {
-          email: result[0].email,
-          name: result[0].name,
-          admin: result[0].admin
-        }
-
-        req.session.user = sessionUser;
-
-        req.session.save();
-
-        console.log(req.session);
-        res.send({result: result});
-      } else {
-        res.send({message: "Wrong username or password"});
+    if (user) {
+      const userinfo = {
+        email: user.email,
+        name: user.name,
+        admin: user.admin
       }
-    });
 
+      req.session.user = userinfo;
+      req.session.save();
+      conn = userinfo;
+      res.send({result: user});
+    } else {
+      res.send({message: 'Wrong username or password'});
+    }
+
+  } catch (e) {
+    console.log(e);
   }
 });
 
+
 // Logout
 app.get('/api/logout', (req, res) => {
+  conn = null;
   req.session.destroy((err) => {
     if (err) {
       return console.log(err);
@@ -104,14 +103,20 @@ app.get('/api/logout', (req, res) => {
   });
 });
 
-app.get('/api/main', function(req, res) {
-  console.log('main: ', req.session.user)
-  req.session.isAuth = true;
-  res.write('Hello');
-  if (req.session.user) {
-    res.send({message: "Hello World"});
+app.get('/api/main', (req, res) => {
+  console.log('User', conn);
+  if (conn) {
+    res.send({result: conn});
+  } else {
+    res.send({message: 'Sign in failed'});
   }
 });
 
+app.get('/',async (req, res) => {
+  res.send(req.session);
+})
 
-app.listen(8080);
+app.listen(8080, function(err){
+  if (err) console.log(err);
+  console.log("Server listening on PORT", 8080);
+});

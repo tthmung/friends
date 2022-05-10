@@ -25,7 +25,7 @@ function containsSpecialChars(str) {
   return specialChars.test(str);
 }
 
-export default function SignUp(){
+export default function SignUp() {
 
   const navigate = useNavigate();
 
@@ -59,7 +59,7 @@ export default function SignUp(){
         password: password,
         name: name,
         introduction: introduction
-      }, {withCredentials: true}).then((err) => {
+      }, { withCredentials: true }).then((err) => {
         console.log(err);
       });
 
