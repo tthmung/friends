@@ -1,4 +1,24 @@
 .main-logo {
-    padding-left: 1%
+    padding-left: 1%;
 }
 
+.postForm {
+    padding-top: 5%;
+    display: flex;
+    justify-content: center;
+}
+
+.mainForm {
+    background-color: bisque;
+    padding: 1rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    opacity: 85%;
+    border-radius: 25px;
+}
+
+.background {
+    background: url("../images/mi_in_fall.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+}

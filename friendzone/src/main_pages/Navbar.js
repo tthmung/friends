@@ -40,7 +40,7 @@ function NavigationBar(props) {
                             </span>
                         }>
                         <NavDropdown.Item href="#Profile">Profile</NavDropdown.Item>
-                        <NavDropdown.Item href="#Post">Post Event</NavDropdown.Item>
+                        <NavDropdown.Item href="/postEvent">Post Event</NavDropdown.Item>
                         {props.admin ? <NavDropdown.Item href="#Report">View Report</NavDropdown.Item> : ''}
                         <NavDropdown.Divider />
                         <NavDropdown.Item onClick={logout}>Sign Out</NavDropdown.Item>

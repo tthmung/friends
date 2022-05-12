@@ -20,16 +20,16 @@ export default function Main() {
     }, []);
 
     const authinfo = () => {
-    Axios.get('http://127.0.0.1:8080/api/main', {withCredentials: true}).then((response) => {
-        if (response.data.result) {
-            setEmailData(response.data.result.email);
-            setUserData(response.data.result.name);
-            setAdmin(response.data.result.admin);
-        } else {
-            console.log("ERROR USER NOT LOG IN");
-            navigate('/');
-        }
-    })
+        Axios.get('http://127.0.0.1:8080/api/main', { withCredentials: true }).then((response) => {
+            if (response.data.result) {
+                setEmailData(response.data.result.email);
+                setUserData(response.data.result.name);
+                setAdmin(response.data.result.admin);
+            } else {
+                console.log("ERROR USER NOT LOG IN");
+                navigate('/');
+            }
+        })
     }
 
     return (

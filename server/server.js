@@ -9,7 +9,7 @@ const db = require('./db');
 
 const mysqlStore = require('express-mysql-session')(session);
 
-const options ={
+const options = {
   host: 'localhost',
   user: 'root',
   password: '',
@@ -17,13 +17,13 @@ const options ={
   createDatabaseTable: true
 }
 
-const  sessionStore = new mysqlStore(options);
+const sessionStore = new mysqlStore(options);
 
 const cookieAge = 1000 * 60 * 60 * 24; // 24 hours
 
 app.use(cookieParser());
 app.use(express.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('trust proxy', 1);
 
@@ -34,9 +34,9 @@ app.use(cors({
 
 app.use(session({
   name: 'friend_zone',
-	secret: 'secret',
-	resave: false,
-	saveUninitialized: false,
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: false,
   store: sessionStore,
   cookie: {
     sameSite: true,
@@ -45,7 +45,7 @@ app.use(session({
   }
 }));
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
@@ -82,9 +82,9 @@ app.post('/api/login', async (req, res, next) => {
       req.session.user = userinfo;
       req.session.save();
       conn = userinfo;
-      res.send({result: user});
+      res.send({ result: user });
     } else {
-      res.send({message: 'Wrong username or password'});
+      res.send({ message: 'Wrong username or password' });
     }
 
   } catch (e) {
@@ -103,20 +103,30 @@ app.get('/api/logout', (req, res) => {
   });
 });
 
+// Check if session exist
 app.get('/api/main', (req, res) => {
-  console.log('User', conn);
   if (conn) {
-    res.send({result: conn});
+    res.send({ result: conn });
   } else {
-    res.send({message: 'Sign in failed'});
+    res.send({ message: 'Sign in failed' });
   }
 });
 
-app.get('/',async (req, res) => {
-  res.send(req.session);
-})
+// Post and event
+app.post('/api/postevent', async (req, res) => {
+  const email = req.body.email;
+  const title = req.body.title;
+  const description = req.body.description;
+  const time = req.body.time;
+  const location = req.body.location;
+  const slots = req.body.slots;
+  const category = req.body.category;
+  const subcategory = req.body.subcategory;
 
-app.listen(8080, function(err){
+  await db.postEvent(email, title, description, time, location, slots, category, subcategory);
+});
+
+app.listen(8080, function (err) {
   if (err) console.log(err);
   console.log("Server listening on PORT", 8080);
 });
