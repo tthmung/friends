@@ -13,42 +13,45 @@ function NavigationBar(props) {
     const navigate = useNavigate();
 
     const logout = () => {
-        Axios.get('/api/logout', {withCredentials: true});
+        Axios.get('/api/logout', { withCredentials: true });
         navigate("/");
     }
 
     return (
-        <Navbar bg="light" variable="dark" expand="lg" fixed="top">
-            <Container fluid="md">
-                <Navbar.Brand href="/main" className="main-logo">
-                    <Calendar3WeekFill /> {' '}
-                    Friend Zone
-                </Navbar.Brand>
-
-            </Container>
-            <Navbar.Collapse href="#notfication" className="justify-content-end">
-                <Nav>
-                    <Navbar.Brand href="#Notfication">
-                        <Bell />
+        <div>
+            <Navbar className="Navbar" bg="dark" variant="dark" expand="lg">
+                <Container fluid="md">
+                    <Navbar.Brand href="/main" className="main-logo">
+                        <Calendar3WeekFill /> {' '}
+                        𝔽𝕣𝕚𝕖𝕟𝕕 ℤ𝕠𝕟𝕖
                     </Navbar.Brand>
-                    <NavDropdown id="collasible-nav-dropdown"
-                        drop="start"
-                        menuVariant="dark"
-                        title={
-                            <span>
-                                < PersonLinesFill />
-                            </span>
-                        }>
-                        <NavDropdown.Item href="#Profile">Profile</NavDropdown.Item>
-                        <NavDropdown.Item href="/postEvent">Post Event</NavDropdown.Item>
-                        {props.admin ? <NavDropdown.Item href="#Report">View Report</NavDropdown.Item> : ''}
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item onClick={logout}>Sign Out</NavDropdown.Item>
-                    </NavDropdown>
-                </Nav>
-            </Navbar.Collapse>
 
-        </Navbar>
+                </Container>
+                <Navbar.Collapse href="#notfication" className="justify-content-end">
+                    <Nav>
+                        <Navbar.Brand href="#Notfication">
+                            <Bell />
+                        </Navbar.Brand>
+                        <NavDropdown id="collasible-nav-dropdown"
+                            drop="start"
+                            menuVariant="dark"
+                            title={
+                                <span>
+                                    < PersonLinesFill />
+                                </span>
+                            }>
+                            <NavDropdown.Item href="#Profile">Profile</NavDropdown.Item>
+                            <NavDropdown.Item href="/postEvent">Post Event</NavDropdown.Item>
+                            {props.admin ? <NavDropdown.Item href="#Report">View Report</NavDropdown.Item> : ''}
+                            <NavDropdown.Divider />
+                            <NavDropdown.Item onClick={logout}>Sign Out</NavDropdown.Item>
+                        </NavDropdown>
+                    </Nav>
+                </Navbar.Collapse>
+
+            </Navbar>
+
+        </div>
     );
 }
 

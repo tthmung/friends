@@ -2,6 +2,20 @@
     padding-left: 1%;
 }
 
+.Navbar {
+    top: 0;
+    position: fixed;
+    width: 100%;
+    z-index: 10;
+    height: 6%;
+}
+
+.main_page {
+    padding-top: 5%;
+    height: 100vh;
+    background-color: #F3F0E8;
+}
+
 .postForm {
     padding-top: 5%;
     display: flex;
@@ -21,4 +35,12 @@
     background-size: cover;
     background-repeat: no-repeat;
     height: 100vh;
+}
+
+.list_view {
+    background-color: #F2B9AD;
+}
+
+.list_view:hover {
+    background-color:  #a3ceec;
 }

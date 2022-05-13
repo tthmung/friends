@@ -112,6 +112,23 @@ app.get('/api/main', (req, res) => {
   }
 });
 
+// Format ISO 8601 to nice date format
+createFromMysql = function (mysql_string) {
+  var d = new Date(mysql_string);
+  const date = d.toLocaleString();
+  return date;
+}
+
+app.get('/api/events', async (req, res) => {
+  events = await db.getEvents();
+
+  for (var i = 0; i < events.length; i++) {
+    var time = events[i].time;
+    events[i].time = createFromMysql(time);
+  }
+  res.send({ events: events });
+});
+
 // Post and event
 app.post('/api/postevent', async (req, res) => {
   const email = req.body.email;

@@ -126,7 +126,7 @@ export default function Post_Event(props) {
             email: emailData,
             title: title,
             description: description,
-            time: timeValue.toString(),
+            time: timeValue.toISOString().slice(0, 19).replace('T', ' '),
             location: location,
             slots: slot,
             category: cat,
@@ -135,7 +135,7 @@ export default function Post_Event(props) {
             console.log(err);
         });
 
-        navigate('/');
+        navigate('/main');
 
     }
 
@@ -189,7 +189,7 @@ export default function Post_Event(props) {
                         </Row>
 
                         <Row className="mb-3">
-                            <DateTimePicker onChange={setTimeValue} value={timeValue} format="y-MM-dd h:mm:ss" required />
+                            <DateTimePicker onChange={setTimeValue} value={timeValue} required />
                         </Row>
 
                         <Row className="mb-3">

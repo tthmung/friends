@@ -4,19 +4,51 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavigationBar from './Navbar';
 
+import Badge from 'react-bootstrap/Badge';
+import ListGroup from 'react-bootstrap/ListGroup';
+
+import { Calculator, Controller, Palette, Globe2, SuitClubFill, PeopleFill, Building, Activity } from "react-bootstrap-icons";
+
 import "./main.css";
+
+
+export function LeadingIcon(props) {
+    const cat = props.cat;
+    if (cat === 'Academic') {
+        return (<> {Calculator} </>);
+    } else if (cat === 'Active') {
+        return (<> {Globe2} </>);
+    } else if (cat === 'Carpool') {
+        return (<> {PeopleFill} </>);
+    } else if (cat === 'Clubs') {
+        return (<> {SuitClubFill} </>);
+    } else if (cat === 'Creative') {
+        return (<> {Palette} </>);
+    } else if (cat === 'Gaming') {
+        return (<> {Controller} </>);
+    } else if (cat === 'Volunteer') {
+        return (<> {Building} </>);
+    } else {
+        return (<> {Activity} </>);
+    }
+}
 
 export default function Main() {
 
     const [userData, setUserData] = useState();
     const [emailData, setEmailData] = useState();
     const [admin, setAdmin] = useState(false);
+
+    const [events, setEvents] = useState([]);
+    const [eventTime, setEventTime] = useState([]);
+
     const navigate = useNavigate();
 
     useEffect(() => {
         if (!userData) {
             authinfo();
         }
+        getEvents();
     }, []);
 
     const authinfo = () => {
@@ -32,10 +64,36 @@ export default function Main() {
         })
     }
 
+    const getEvents = () => {
+        Axios.get('http://127.0.0.1:8080/api/events', { withCredentials: true }).then((response) => {
+            if (response.data.events) {
+                console.log(response.data.events);
+                setEvents(response.data.events);
+            }
+        });
+    }
+
+    const alertUser = () => {
+        alert('You clicked');
+    }
+
     return (
         <>
-            <div className="">
-                <NavigationBar admin={admin} user={userData} email={emailData} />
+            <NavigationBar admin={admin} user={userData} email={emailData} />
+            <div className="main_page">
+                <ListGroup>
+                    {events.map((event, i) => {
+                        return (<ListGroup.Item as="li" action onClick={alertUser} className="d-flex justify-content-between align-items-start list_view">
+                            <div className="mas-2 me-auto">
+                                <div className="fw-bold">{event.title}</div>
+                                {event.location}, {event.time}
+                            </div>
+                            <Badge bg="success" pill>
+                                {event.slots}
+                            </Badge>
+                        </ListGroup.Item>)
+                    })}
+                </ListGroup>
             </div>
         </>
     )
