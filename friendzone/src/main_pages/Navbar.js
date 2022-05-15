@@ -12,7 +12,9 @@ function NavigationBar(props) {
 
     const navigate = useNavigate();
 
+    // Logout function
     const logout = () => {
+        // GET request to logout then navigate to login page
         Axios.get('/api/logout', { withCredentials: true });
         navigate("/");
     }
@@ -23,7 +25,7 @@ function NavigationBar(props) {
                 <Container fluid="md">
                     <Navbar.Brand href="/main" className="main-logo">
                         <Calendar3WeekFill /> {' '}
-                        𝔽𝕣𝕚𝕖𝕟𝕕 ℤ𝕠𝕟𝕖
+                        𝔽𝕣𝕚𝕖𝕟𝕕 ℤ𝕠𝕟𝕖 {/* Special font form https://loremipsum.io/font-generator/ */}
                     </Navbar.Brand>
 
                 </Container>

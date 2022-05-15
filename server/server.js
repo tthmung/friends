@@ -112,7 +112,7 @@ app.get('/api/main', (req, res) => {
   }
 });
 
-// Format ISO 8601 to nice date format
+// Format ISO-8601 to nice date format
 createFromMysql = function (mysql_string) {
   var d = new Date(mysql_string);
   const date = d.toLocaleString();
@@ -143,7 +143,5 @@ app.post('/api/postevent', async (req, res) => {
   await db.postEvent(email, title, description, time, location, slots, category, subcategory);
 });
 
-app.listen(8080, function (err) {
-  if (err) console.log(err);
-  console.log("Server listening on PORT", 8080);
-});
+// Run on port 8080 of localhost
+app.listen(8080);

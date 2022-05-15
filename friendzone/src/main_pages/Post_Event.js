@@ -8,6 +8,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import { Calendar2 } from 'react-bootstrap-icons';
 
 import "./main.css";
 
@@ -15,10 +16,11 @@ import "./main.css";
 export default function Post_Event(props) {
 
     const [userData, setUserData] = useState();
-    const [emailData, setEmailData] = useState();
     const [admin, setAdmin] = useState(false);
     const navigate = useNavigate();
 
+    // All the requirement informations to post an event
+    const [emailData, setEmailData] = useState();
     const [timeValue, setTimeValue] = useState(new Date());
     const [title, setTitle] = useState('');
     const [cat, setCat] = useState('');
@@ -27,12 +29,7 @@ export default function Post_Event(props) {
     const [slot, setSlot] = useState(1);
     const [description, setDescription] = useState('');
 
-    useEffect(() => {
-        if (!userData) {
-            authinfo();
-        }
-    }, []);
-
+    // Check if user is authenticated
     const authinfo = () => {
         Axios.get('http://127.0.0.1:8080/api/main', { withCredentials: true }).then((response) => {
             if (response.data.result) {
@@ -45,6 +42,13 @@ export default function Post_Event(props) {
             }
         });
     }
+
+    useEffect(() => {
+        if (!userData) {
+            authinfo();
+        }
+    }, []);
+
 
     const Category = [
         'Academic',
@@ -115,13 +119,12 @@ export default function Post_Event(props) {
         subCategories = [];
     }
 
+    // Execute when sign up form is complete
     const handleSubmit = (e) => {
+        // Prevent page refresh
         e.preventDefault();
 
-        console.log(timeValue.toString());
-        console.log(cat);
-        console.log(subCat);
-
+        // POST request to post the events
         Axios.post('http://127.0.0.1:8080/api/postevent', {
             email: emailData,
             title: title,
@@ -135,8 +138,8 @@ export default function Post_Event(props) {
             console.log(err);
         });
 
+        // Navigate to main page
         navigate('/main');
-
     }
 
     return (
@@ -188,8 +191,15 @@ export default function Post_Event(props) {
                             </Form.Group>
                         </Row>
 
+                        <Form.Label>Date Time</Form.Label>
                         <Row className="mb-3">
-                            <DateTimePicker onChange={setTimeValue} value={timeValue} required />
+                            <DateTimePicker
+                            onChange={setTimeValue}
+                            value={timeValue}
+                            calendarIcon={<Calendar2 />}
+                            disableClock={true}
+                            minDate={new Date()}
+                            required />
                         </Row>
 
                         <Row className="mb-3">

@@ -11,7 +11,7 @@
 }
 
 .main_page {
-    padding-top: 5%;
+    padding-top: 3.5%;
     height: 100vh;
     background-color: #F3F0E8;
 }
@@ -43,4 +43,9 @@
 
 .list_view:hover {
     background-color:  #a3ceec;
+}
+
+.subNav {
+    display: flex;
+    justify-content: space-between;
 }
