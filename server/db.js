@@ -72,4 +72,23 @@ db.getEvents = () => {
     })
 };
 
+// Get a specfied event
+db.getEventById = (id) => {
+    return new Promise((resolve, reject) => {
+        con.query('SELECT * FROM events WHERE id=?', [id], (err, result) => {
+            if (err) {
+                reject(err);
+            }
+            return resolve(result);
+        });
+    });
+};
+
+// Get the list of users that signed up an event
+db.getSignedUpUsers = (id) => {
+    return new Promise((resolve, reject) => {
+        //TODO: get the correct query
+    })
+}
+
 module.exports = db;

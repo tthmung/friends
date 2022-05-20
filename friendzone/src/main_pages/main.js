@@ -7,10 +7,10 @@ import NavigationBar from './Navbar';
 import Badge from 'react-bootstrap/Badge';
 import ListGroup from 'react-bootstrap/ListGroup';
 
-import { Calculator, Controller, Palette, Globe2, SuitClubFill, PeopleFill, Building, Activity, Search, FilterCircle } from "react-bootstrap-icons";
+import { Calculator, Controller, Palette, Globe2, SuitClubFill } from "react-bootstrap-icons";
+import { PeopleFill, Building, Activity, Search, FilterCircle } from "react-bootstrap-icons";
 
 import "./main.css";
-
 
 // Find the icon associated with the category
 function LeadingIcon(props) {
@@ -34,15 +34,12 @@ function LeadingIcon(props) {
     }
 }
 
-export default function Main() {
+export default function Main(props) {
 
     // User states
     const [userData, setUserData] = useState();
     const [emailData, setEmailData] = useState();
     const [admin, setAdmin] = useState(false);
-
-    // Events states
-    const [events, setEvents] = useState([]);
 
     const navigate = useNavigate();
 
@@ -60,25 +57,14 @@ export default function Main() {
         })
     }
 
-    // GET request to get all the events
-    const getEvents = () => {
-        Axios.get('http://127.0.0.1:8080/api/events', { withCredentials: true }).then((response) => {
-            if (response.data.events) {
-                console.log(response.data.events);
-                setEvents(response.data.events);
-            }
-        });
-    }
-
     useEffect(() => {
         if (!userData) {
             authinfo();
         }
-        getEvents();
     }, []);
 
-    const alertUser = () => {
-        alert('You clicked');
+    const alertUser = (e) => {
+        navigate('/main/' + e);
     }
 
     return (
@@ -91,17 +77,21 @@ export default function Main() {
                     <FilterCircle width="40" />
                 </div>
                 <ListGroup>
-                    {events.map((event, i) => {
-                        return (<ListGroup.Item as="li" action onClick={alertUser} className="d-flex justify-content-between align-items-start list_view">
-                            <div className="mas-2 me-auto">
-                                <LeadingIcon cat={event.category} />
-                                <div className="fw-bold">{event.title}</div>
-                                {event.location}, {event.time}
-                            </div>
-                            <Badge bg="success" pill>
-                                {event.slots}
-                            </Badge>
-                        </ListGroup.Item>)
+                    {props.events.map((event, i) => {
+                        return (
+                            <>
+                                <ListGroup.Item as="li" action onClick={() => alertUser(event.id)} className="d-flex justify-content-between align-items-start list_view">
+                                    <div className="mas-2 me-auto">
+                                        <LeadingIcon cat={event.category} />
+                                        <div className="fw-bold">{event.title}</div>
+                                        {event.location}, {event.time}
+                                    </div>
+                                    <Badge bg="success" pill>
+                                        Signed Up: {event.slots}
+                                    </Badge>
+                                </ListGroup.Item>
+                            </>
+                        )
                     })}
                 </ListGroup>
             </div>

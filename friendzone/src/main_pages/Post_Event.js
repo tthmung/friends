@@ -49,7 +49,6 @@ export default function Post_Event(props) {
         }
     }, []);
 
-
     const Category = [
         'Academic',
         'Active',

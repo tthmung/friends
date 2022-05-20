@@ -42,10 +42,31 @@
 }
 
 .list_view:hover {
-    background-color:  #a3ceec;
+background-color:  #a3ceec;
 }
 
 .subNav {
     display: flex;
     justify-content: space-between;
 }
+
+.detailTitle {
+    justify-content: center;
+}
+
+.main-function {
+    background-color: #ffcc00;
+    color: black;
+    font-size: medium;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 50%;
+    text-align: center;
+    text-decoration: none;
+}
+
+.main-function:hover {
+    background: #6cf0c2;
+  }

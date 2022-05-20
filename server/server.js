@@ -3,12 +3,13 @@ const session = require("express-session");
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
 const cors = require("cors");
-const mysql = require("mysql");
 const app = express();
+
 const db = require('./db');
 
 const mysqlStore = require('express-mysql-session')(session);
 
+// No need to hide running on localhost (XAMPP)
 const options = {
   host: 'localhost',
   user: 'root',
@@ -17,6 +18,7 @@ const options = {
   createDatabaseTable: true
 }
 
+// MySQL session storage
 const sessionStore = new mysqlStore(options);
 
 const cookieAge = 1000 * 60 * 60 * 24; // 24 hours
@@ -51,7 +53,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-// Unsafe but session is not saving for some reasons.
+// Unsafe but session is not saving for unkown reason.
 let conn;
 
 // Sign Up
@@ -72,6 +74,7 @@ app.post('/api/login', async (req, res, next) => {
 
     user = await db.checkUser(email, password);
 
+    // Check if user is valid
     if (user) {
       const userinfo = {
         email: user.email,
@@ -119,6 +122,7 @@ createFromMysql = function (mysql_string) {
   return date;
 }
 
+// Get all the events from the database
 app.get('/api/events', async (req, res) => {
   events = await db.getEvents();
 
@@ -129,7 +133,20 @@ app.get('/api/events', async (req, res) => {
   res.send({ events: events });
 });
 
-// Post and event
+// Get an event from the databse by its ID
+app.get('/api/getevent/:id', async (req, res) => {
+  const id = req.params.id;
+
+  const event = await db.getEventById(id);
+  var time = event[0].time;
+  event[0].time = createFromMysql(time);
+  time = event[0].date_created;
+  event[0].date_created = createFromMysql(time);
+
+  res.send({ event: event[0] });
+});
+
+// Post an event
 app.post('/api/postevent', async (req, res) => {
   const email = req.body.email;
   const title = req.body.title;
