@@ -78,6 +78,17 @@ export default function Main(props) {
                 </div>
                 <ListGroup>
                     {props.events.map((event, i) => {
+
+                        var numberOfSignUp = 0;
+
+                        Axios.post('http://127.0.0.1:8080/api/getusers', {
+                            id: event.id
+                        }, { withCredentials: true }).then((response) => {
+                            console.log('Main Page' + response);
+                            if (response.data.result) {
+                                numberOfSignUp = response.data.result.length;
+                            }
+                        });
                         return (
                             <>
                                 <ListGroup.Item as="li" action onClick={() => alertUser(event.id)} className="d-flex justify-content-between align-items-start list_view">
@@ -87,7 +98,7 @@ export default function Main(props) {
                                         {event.location}, {event.time}
                                     </div>
                                     <Badge bg="success" pill>
-                                        Signed Up: {event.slots}
+                                        Signed Up: {numberOfSignUp}
                                     </Badge>
                                 </ListGroup.Item>
                             </>

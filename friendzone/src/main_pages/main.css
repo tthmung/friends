@@ -4,20 +4,20 @@
 
 .Navbar {
     top: 0;
-    position: fixed;
+    position: sticky;
     width: 100%;
     z-index: 10;
     height: 6%;
 }
 
 .main_page {
-    padding-top: 3.5%;
     height: 100vh;
     background-color: #F3F0E8;
+    padding-top: .5%;
 }
 
 .postForm {
-    padding-top: 5%;
+    padding-top: 3%;
     display: flex;
     justify-content: center;
 }
@@ -42,7 +42,7 @@
 }
 
 .list_view:hover {
-background-color:  #a3ceec;
+    background-color: #a3ceec;
 }
 
 .subNav {
@@ -54,8 +54,8 @@ background-color:  #a3ceec;
     justify-content: center;
 }
 
-.main-function {
-    background-color: #ffcc00;
+.main-function-button {
+    background-color: #73cf9f;
     color: black;
     font-size: medium;
     padding: 14px 20px;
@@ -65,8 +65,21 @@ background-color:  #a3ceec;
     width: 50%;
     text-align: center;
     text-decoration: none;
+    border-radius: 25px;
 }
 
-.main-function:hover {
-    background: #6cf0c2;
-  }
+.main-function-button:hover {
+    background: #ffcc00;
+}
+
+.report-alert {
+    background: #eccda3;
+}
+
+.middle-col {
+    text-align: center;
+}
+
+.joinLeave {
+    margin: 15% 0 20% 0;
+}

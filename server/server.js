@@ -54,6 +54,7 @@ app.use(function (req, res, next) {
 });
 
 // Unsafe but session is not saving for unkown reason.
+// I tried many things, but just don't want to work.
 let conn;
 
 // Sign Up
@@ -94,7 +95,6 @@ app.post('/api/login', async (req, res, next) => {
     console.log(e);
   }
 });
-
 
 // Logout
 app.get('/api/logout', (req, res) => {
@@ -158,6 +158,50 @@ app.post('/api/postevent', async (req, res) => {
   const subcategory = req.body.subcategory;
 
   await db.postEvent(email, title, description, time, location, slots, category, subcategory);
+});
+
+// Check if user already joined an event
+app.post('/api/checkevent', async (req, res) => {
+  const id = req.body.id;
+  const email = req.body.email;
+
+  const result = await db.checkJoin(id, email);
+  if (result.length > 0) {
+    res.send({ error: 'User already registered' });
+  }
+});
+
+// Get list of users
+app.post('/api/getusers', async (req, res) => {
+  const id = req.body.id;
+
+  const result = await db.getSignedUpUsers(id);
+  res.send({result: result});
+});
+
+// Join an event
+app.post('/api/joinevent', async (req, res) => {
+  const id = req.body.id;
+  const email = req.body.email;
+  const comment = req.body.comment;
+
+  await db.joinEvent(id, email, comment);
+});
+
+// Leave an event
+app.post('/api/leaveevent', async (req, res) => {
+  const id = req.body.id;
+  const email = req.body.email;
+
+  await db.leaveEvent(id, email);
+});
+
+app.post('/api/reportevent', async (req, res) => {
+  const id = req.body.id;
+  const email = req.body.email;
+  const comment = req.body.comment;
+
+  await db.reportEvent(id, email);
 });
 
 // Run on port 8080 of localhost

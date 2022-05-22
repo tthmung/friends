@@ -21,7 +21,7 @@ function NavigationBar(props) {
 
     return (
         <div>
-            <Navbar className="Navbar" bg="dark" variant="dark" expand="lg">
+            <Navbar className="Navbar" bg="dark" variant="dark" expand="lg" fixed="top">
                 <Container fluid="md">
                     <Navbar.Brand href="/main" className="main-logo">
                         <Calendar3WeekFill /> {' '}

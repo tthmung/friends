@@ -52,20 +52,38 @@ export default function DetailEvent(props) {
         getEventById();
     }, []);
 
-    const editEvent = () => {
-        // TODO: Edit an event if it's the owner
+    const editEvent = (e) => {
+        // TODO: Render event edit page, replace the current page
     }
 
-    const joinEvent = () => {
-        // TODO: Join an event
+    // TODO: Add already joined event
+    // Create post request to join an event
+    const joinEvent = (e) => {
+        Axios.post('http://127.0.0.1:8080/api/joinevent',
+            {
+                id: event.id,
+                email: emailData,
+                comment: ''
+            }, { withCredentials: true });
     }
 
+    // TODO: Event not joined function
+    // Create post request to leave an event
     const leaveEvent = () => {
-        // TODO: Leave an event
+        Axios.post('http://127.0.0.1:8080/api/leaveevent', {
+            id: event.id,
+            email: emailData
+        }, { withCredentials: true });
     }
 
+    // TODO: Add already reported function
+    // Report an event
     const reportEvent = () => {
-        // TODO: Report an event
+        Axios.post('http://127.0.0.1:8080/api/reportevent', {
+            id: event.id,
+            email: emailData,
+            comment: ''
+        }, { withCredentials: true });
     }
 
     return (
@@ -76,71 +94,72 @@ export default function DetailEvent(props) {
                     <Row>
                         <Col>
                             <h1>{event.title}</h1>
-                            <Row>
-                                <Table>
-                                    <tbody>
-                                        <tr>
-                                            <td>Email:</td>
-                                            <td><Link to=''
-                                                onClick={() => window.location = 'mailto:' + event.email}>
-                                                {event.email}
+                            <Table>
+                                <tbody>
+                                    <tr>
+                                        <td>Email:</td>
+                                        <td><Link to=''
+                                            onClick={() => window.location = 'mailto:' + event.email}>
+                                            {event.email}
 
-                                            </Link></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Time:</td>
-                                            <td>{event.time}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Location:</td>
-                                            <td>{event.location}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Category:</td>
-                                            <td>{event.category}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Subcategory:</td>
-                                            <td>{event.subcategory}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Slot:</td>
-                                            <td>{event.slots}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Signed Up:</td>
-                                            <td>12</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Reported:</td>
-                                            <td>{event.reported}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Date Created:</td>
-                                            <td>{event.date_created}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Description:</td>
-                                            <td>{event.description}</td>
-                                        </tr>
-                                    </tbody>
-                                </Table>
-                            </Row>
+                                        </Link></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Time:</td>
+                                        <td>{event.time}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Location:</td>
+                                        <td>{event.location}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Category:</td>
+                                        <td>{event.category}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Subcategory:</td>
+                                        <td>{event.subcategory}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Slot:</td>
+                                        <td>{event.slots}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Signed Up:</td>
+                                        <td>12</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Reported:</td>
+                                        <td>{event.reported}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date Created:</td>
+                                        <td>{event.date_created}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Description:</td>
+                                        <td>{event.description}</td>
+                                    </tr>
+                                </tbody>
+                            </Table>
                         </Col>
-                        <Col>
+                        <Col className="middle-col">
                             <Col>
-                            <button className="main-function">Edit</button>
+                                <button className="main-function-button" onClick={editEvent}>Edit</button>
                             </Col>
-                            <Col>
-                            <button className="main-function">Join</button>
-                            </Col>
-                            <Col>
-                            <button className="main-function">Leave</button>
-                            </Col>
-                            <Col>
-                            <button className="main-function">Report</button>
-                            </Col>
-
+                            <div className="joinLeave">
+                                <Col>
+                                    <button className="main-function-button" onClick={joinEvent}>Join</button>
+                                </Col>
+                                <Col>
+                                    <button className="main-function-button" onClick={leaveEvent}>Leave</button>
+                                </Col>
+                            </div>
+                            <div className="">
+                                <Col>
+                                    <button className="main-function-button report-alert" onClick={reportEvent}>Report</button>
+                                </Col>
+                            </div>
                         </Col>
                         <Col>
                             <h1>Signed Up List</h1>

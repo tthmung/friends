@@ -84,10 +84,70 @@ db.getEventById = (id) => {
     });
 };
 
+// Check if a user already join an event
+db.checkJoin = (id, email) => {
+    return new Promise((resolve, reject) => {
+        con.query('SELECT * FROM joins WHERE id=? AND email=?', [id, email], (err, result) => {
+            if (err) {
+                reject(err);
+            }
+
+            return resolve(result);
+        })
+    });
+};
+
+// Join a specific event
+db.joinEvent = (id, email, comment) => {
+    return new Promise((resolve, reject) => {
+        con.query('INSERT INTO joins(id, email, comment) VALUES (?, ?, ?)', [id, email, comment], (err, result) => {
+            if (err) {
+                reject(err);
+            }
+
+            return resolve(result);
+        });
+    });
+};
+
+// Leave an event
+db.leaveEvent = (id, email) => {
+    return new Promise((resolve, reject) => {
+        con.query('DELETE FROM joins WHERE id = ? AND email = ?', [id, email], (err, result) => {
+            if (err) {
+                reject(err);
+            }
+
+            return resolve(result);
+        });
+    });
+};
+
 // Get the list of users that signed up an event
 db.getSignedUpUsers = (id) => {
     return new Promise((resolve, reject) => {
-        //TODO: get the correct query
+        con.query('SELECT * FROM joins WHERE id = ?', [id], (err, result) => {
+            if (err) {
+                reject(err);
+            }
+
+            return resolve(result);
+        });
+    });
+};
+
+// Report an event
+db.reportEvent = (id, email, comment) => {
+    return new Promise((resolve, reject) => {
+        con.query('INSERT INTO reports (id, email, comment) VALUES(?, ?, ?)', [id, email, comment], (err, result) => {
+            if (err) {
+                reject(err);
+            }
+
+            con.query('UPDATE events SET reported=reported + 1 WHERE id = ?', [id]);
+
+            return resolve(result);
+        });
     })
 }
 
