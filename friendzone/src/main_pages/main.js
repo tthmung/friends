@@ -78,30 +78,17 @@ export default function Main(props) {
                 </div>
                 <ListGroup>
                     {props.events.map((event, i) => {
-
-                        var numberOfSignUp = 0;
-
-                        Axios.post('http://127.0.0.1:8080/api/getusers', {
-                            id: event.id
-                        }, { withCredentials: true }).then((response) => {
-                            console.log('Main Page' + response);
-                            if (response.data.result) {
-                                numberOfSignUp = response.data.result.length;
-                            }
-                        });
                         return (
-                            <>
-                                <ListGroup.Item as="li" action onClick={() => alertUser(event.id)} className="d-flex justify-content-between align-items-start list_view">
-                                    <div className="mas-2 me-auto">
-                                        <LeadingIcon cat={event.category} />
-                                        <div className="fw-bold">{event.title}</div>
-                                        {event.location}, {event.time}
-                                    </div>
-                                    <Badge bg="success" pill>
-                                        Signed Up: {numberOfSignUp}
-                                    </Badge>
-                                </ListGroup.Item>
-                            </>
+                            <ListGroup.Item as="li" key={event.id} action onClick={() => alertUser(event.id)} className="d-flex justify-content-between align-items-start list_view">
+                                <div className="mas-2 me-auto">
+                                    <LeadingIcon cat={event.category} />
+                                    <div className="fw-bold">{event.title}</div>
+                                    {event.location}, {event.time}
+                                </div>
+                                <Badge bg="success" pill>
+                                    Signed Up: {event.sign_up}
+                                </Badge>
+                            </ListGroup.Item>
                         )
                     })}
                 </ListGroup>

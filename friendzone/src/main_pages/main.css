@@ -68,6 +68,10 @@
     border-radius: 25px;
 }
 
+.edit-button {
+    background-color: #73cfcd;
+}
+
 .main-function-button:hover {
     background: #ffcc00;
 }
@@ -77,6 +81,7 @@
 }
 
 .middle-col {
+    margin-top: 3%;
     text-align: center;
 }
 

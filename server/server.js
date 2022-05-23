@@ -172,8 +172,8 @@ app.post('/api/checkevent', async (req, res) => {
 });
 
 // Get list of users
-app.post('/api/getusers', async (req, res) => {
-  const id = req.body.id;
+app.get('/api/getusers/:id', async (req, res) => {
+  const id = req.params.id;
 
   const result = await db.getSignedUpUsers(id);
   res.send({result: result});

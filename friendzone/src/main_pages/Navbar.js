@@ -19,6 +19,10 @@ function NavigationBar(props) {
         navigate("/");
     }
 
+    const profilePage = () => {
+        navigate("/profile", { state: { email: props.email } });
+    }
+
     return (
         <div>
             <Navbar className="Navbar" bg="dark" variant="dark" expand="lg" fixed="top">
@@ -42,7 +46,7 @@ function NavigationBar(props) {
                                     < PersonLinesFill />
                                 </span>
                             }>
-                            <NavDropdown.Item href="#Profile">Profile</NavDropdown.Item>
+                            <NavDropdown.Item onClick={profilePage}>Profile</NavDropdown.Item>
                             <NavDropdown.Item href="/postEvent">Post Event</NavDropdown.Item>
                             {props.admin ? <NavDropdown.Item href="#Report">View Report</NavDropdown.Item> : ''}
                             <NavDropdown.Divider />

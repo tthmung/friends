@@ -104,7 +104,7 @@ db.joinEvent = (id, email, comment) => {
             if (err) {
                 reject(err);
             }
-
+            con.query('UPDATE events SET sign_up=sign_up + 1 WHERE id=?', [id]);
             return resolve(result);
         });
     });
@@ -117,7 +117,7 @@ db.leaveEvent = (id, email) => {
             if (err) {
                 reject(err);
             }
-
+            con.query('UPDATE events SET sign_up=sign_up - 1 WHERE id=?', [id]);
             return resolve(result);
         });
     });
@@ -130,7 +130,6 @@ db.getSignedUpUsers = (id) => {
             if (err) {
                 reject(err);
             }
-
             return resolve(result);
         });
     });

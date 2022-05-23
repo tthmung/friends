@@ -8,12 +8,16 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table';
+import ListGroup from 'react-bootstrap/ListGroup';
+
 
 import './main.css';
 
 export default function DetailEvent(props) {
 
     const [event, setEvent] = useState([]);
+    const [users, setUsers] = useState([]);
+
     // User states
     const [userData, setUserData] = useState();
     const [emailData, setEmailData] = useState();
@@ -45,11 +49,22 @@ export default function DetailEvent(props) {
             });
     }
 
+    // Get the users that signed up for the specified event
+    const getSignedUpUsers = () => {
+        Axios.get('http://127.0.0.1:8080/api/getusers/' + props.id,
+            { withCredentials: true }).then((response) => {
+                if (response.data.result) {
+                    setUsers(response.data.result);
+                }
+            });
+    }
+
     useEffect(() => {
         if (!userData) {
             authinfo();
         }
         getEventById();
+        getSignedUpUsers();
     }, []);
 
     const editEvent = (e) => {
@@ -145,7 +160,7 @@ export default function DetailEvent(props) {
                         </Col>
                         <Col className="middle-col">
                             <Col>
-                                <button className="main-function-button" onClick={editEvent}>Edit</button>
+                                <button className="main-function-button edit-button" onClick={editEvent}>Edit</button>
                             </Col>
                             <div className="joinLeave">
                                 <Col>
@@ -163,12 +178,11 @@ export default function DetailEvent(props) {
                         </Col>
                         <Col>
                             <h1>Signed Up List</h1>
-                            <p>LIST OF EMAIL HERE</p>
-                            <p>LIST OF EMAIL HERE</p>
-                            <p>LIST OF EMAIL HERE</p>
-                            <p>LIST OF EMAIL HERE</p>
-                            <p>LIST OF EMAIL HERE</p>
-                            <p>LIST OF EMAIL HERE</p>
+                            <Table>
+                                <tbody>
+                                    {users.map((user) => (<tr><td key={user.email}>{user.email}</td></tr>))}
+                                </tbody>
+                            </Table>
                         </Col>
                     </Row>
                 </Container>
