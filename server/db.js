@@ -150,4 +150,44 @@ db.reportEvent = (id, email, comment) => {
     })
 }
 
+// Get sepecfic user information
+db.getUserInfo = (email) => {
+    return new Promise((resolve, reject) => {
+        con.query('SELECT email, name, introduction FROM users WHERE email = ?', [email], (err, result) => {
+            if (err) {
+                reject(err);
+            }
+
+            return resolve(result);
+        });
+    });
+}
+
+// Get the events created by the user
+db.getMyEvents = (email) => {
+    return new Promise((resolve, reject) => {
+        con.query('SELECT * FROM events WHERE email = ?', [email], (err, result) => {
+            if (err) {
+                reject(err);
+            }
+
+            return resolve(result);
+        });
+    });
+}
+
+// Return the events joined by the user
+db.getJoinedEvent = (email) => {
+    return new Promise((resolve, reject) => {
+        con.query('SELECT e.id id, e.email email, title, description, time, location, slots, category, reported, date_created FROM joins j JOIN events e WHERE e.id = j.id && j.email = ?',
+            [email], (err, result) => {
+                if (err) {
+                    reject(err);
+                }
+
+                return resolve(result);
+            });
+    });
+}
+
 module.exports = db;

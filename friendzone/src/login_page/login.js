@@ -37,7 +37,7 @@ export default function Login() {
           <img className="img-front" src={logo} alt="" />
         </div>
         <div className="title">Please Sign In</div>
-        <h4>{errorMessage}</h4>
+        <h4 className="ErrorMessage">{errorMessage}</h4>
         <div className="form">
           <form onSubmit={login}>
 

@@ -23,7 +23,6 @@ function App() {
   const getEvents = () => {
     Axios.get('http://127.0.0.1:8080/api/events', { withCredentials: true }).then((response) => {
       if (response.data.events) {
-        console.log(response.data.events);
         setEvents(response.data.events);
       }
     });

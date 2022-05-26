@@ -176,7 +176,7 @@ app.get('/api/getusers/:id', async (req, res) => {
   const id = req.params.id;
 
   const result = await db.getSignedUpUsers(id);
-  res.send({result: result});
+  res.send({ result: result });
 });
 
 // Join an event
@@ -185,7 +185,14 @@ app.post('/api/joinevent', async (req, res) => {
   const email = req.body.email;
   const comment = req.body.comment;
 
-  await db.joinEvent(id, email, comment);
+  const result = await db.checkJoin(id, email);
+
+  if (result.length === 1) {
+    res.send({ message: "User already joined" });
+  } else {
+    await db.joinEvent(id, email, comment);
+    res.send({ success: true });
+  }
 });
 
 // Leave an event
@@ -193,15 +200,48 @@ app.post('/api/leaveevent', async (req, res) => {
   const id = req.body.id;
   const email = req.body.email;
 
-  await db.leaveEvent(id, email);
+  const result = await db.checkJoin(id, email);
+  if (result.length === 0) {
+    res.send({ message: "User not joined" });
+  } else {
+    await db.leaveEvent(id, email);
+  }
 });
 
+// Report an event
 app.post('/api/reportevent', async (req, res) => {
   const id = req.body.id;
   const email = req.body.email;
   const comment = req.body.comment;
 
-  await db.reportEvent(id, email);
+  await db.reportEvent(id, email, comment);
+});
+
+// Get user infromation
+app.post('/api/getUser', async (req, res) => {
+  const email = req.body.email;
+
+  var result = await db.getUserInfo(email);
+  res.send({ result: result[0] });
+});
+
+
+// Get event(s) posted by user
+app.post('/api/myevent', async (req, res) => {
+  const email = req.body.email;
+
+  var result = await db.getMyEvents(email);
+  console.log(result);
+  res.send({ result: result });
+});
+
+// Get the joined event(s) by user
+app.post('/api/joinedevent', async (req, res) => {
+  const email = req.body.email;
+
+  var result = await db.getJoinedEvent(email);
+  console.log(result);
+  res.send({ result: result });
 });
 
 // Run on port 8080 of localhost

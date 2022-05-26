@@ -8,8 +8,6 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table';
-import ListGroup from 'react-bootstrap/ListGroup';
-
 
 import './main.css';
 
@@ -22,6 +20,9 @@ export default function DetailEvent(props) {
     const [userData, setUserData] = useState();
     const [emailData, setEmailData] = useState();
     const [admin, setAdmin] = useState(false);
+
+    // Error message
+    const [errorMessage, setErrorMessage] = useState('');
 
     const navigate = useNavigate();
 
@@ -71,15 +72,19 @@ export default function DetailEvent(props) {
         // TODO: Render event edit page, replace the current page
     }
 
-    // TODO: Add already joined event
     // Create post request to join an event
-    const joinEvent = (e) => {
+    const joinEvent = () => {
         Axios.post('http://127.0.0.1:8080/api/joinevent',
             {
                 id: event.id,
                 email: emailData,
                 comment: ''
-            }, { withCredentials: true });
+            }, { withCredentials: true }).then((response) => {
+                getSignedUpUsers();
+                if (response.data.message) {
+                    alert(response.data.message);
+                }
+            });
     }
 
     // TODO: Event not joined function
@@ -88,7 +93,13 @@ export default function DetailEvent(props) {
         Axios.post('http://127.0.0.1:8080/api/leaveevent', {
             id: event.id,
             email: emailData
-        }, { withCredentials: true });
+        }, { withCredentials: true }).then((response) => {
+            if (response.data.message) {
+                alert(response.data.message);
+            }
+        });
+
+        getSignedUpUsers();
     }
 
     // TODO: Add already reported function
@@ -141,7 +152,7 @@ export default function DetailEvent(props) {
                                     </tr>
                                     <tr>
                                         <td>Signed Up:</td>
-                                        <td>12</td>
+                                        <td>{event.sign_up}</td>
                                     </tr>
                                     <tr>
                                         <td>Reported:</td>
