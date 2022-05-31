@@ -138,14 +138,24 @@ db.getSignedUpUsers = (id) => {
 // Report an event
 db.reportEvent = (id, email, comment) => {
     return new Promise((resolve, reject) => {
-        con.query('INSERT INTO reports (id, email, comment) VALUES(?, ?, ?)', [id, email, comment], (err, result) => {
+        con.query('SELECT * FROM reports WHERE id=? AND email=?', [id, email], (err, results) => {
             if (err) {
                 reject(err);
             }
 
-            con.query('UPDATE events SET reported=reported + 1 WHERE id = ?', [id]);
+            // Check if the user already reported the event
+            if (results.length === 0) {
+                con.query('INSERT INTO reports (id, email, comment) VALUES(?, ?, ?)', [id, email, comment], (err, result) => {
+                    if (err) {
+                        reject(err);
+                    }
 
-            return resolve(result);
+                    con.query('UPDATE events SET reported=reported + 1 WHERE id = ?', [id]);
+
+                    return resolve(result);
+                });
+
+            }
         });
     })
 }

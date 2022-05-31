@@ -8,7 +8,9 @@ import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
+import ListGroup from 'react-bootstrap/ListGroup';
 
+import LeadingIcon from './Component'
 import './main.css';
 
 export default function Profile() {
@@ -39,6 +41,7 @@ export default function Profile() {
         })
     }
 
+    // Get the user information
     const getUserInfo = () => {
         Axios.post('http://127.0.0.1:8080/api/getUser', {
             email: location.state.email
@@ -49,6 +52,7 @@ export default function Profile() {
         });
     }
 
+    // Get the event posted by the user
     const getMyEvent = () => {
         Axios.post('http://127.0.0.1:8080/api/myevent', {
             email: location.state.email
@@ -59,6 +63,7 @@ export default function Profile() {
         });
     }
 
+    // Get the event joined by the user
     const getJoinedEvnet = () => {
         Axios.post('http://127.0.0.1:8080/api/joinedevent', {
             email: location.state.email
@@ -78,6 +83,10 @@ export default function Profile() {
         getJoinedEvnet();
     }, [])
 
+
+    const nevigateEvent = (e) => {
+        navigate('/main/' + e);
+    }
     return (
         <>
             <NavigationBar admin={admin} user={userData} email={emailData} />
@@ -97,11 +106,37 @@ export default function Profile() {
             <Container>
                 <Row>
                     <Col className="joinedEvent">
-
+                        <h4>Joined Events</h4>
+                        <ListGroup>
+                            {joinedEvent.map((event) => {
+                                return (
+                                    <ListGroup.Item as="li" key={event.id} action onClick={() => nevigateEvent(event.id)} className="d-flex justify-content-between align-items-start profile_list">
+                                        <div className="mas-2 me-auto">
+                                            <div className="fw-bold">
+                                                <LeadingIcon cat={event.category} /> {event.title}
+                                            </div>
+                                        </div>
+                                    </ListGroup.Item>
+                                )
+                            })}
+                        </ListGroup>
                     </Col>
                     <Col>
                         <div className="myEvent">
-
+                            <h4>My Events</h4>
+                            <ListGroup>
+                                {myEvent.map((event) => {
+                                    return (
+                                        <ListGroup.Item as="li" key={event.id} action onClick={() => nevigateEvent(event.id)} className="d-flex justify-content-between align-items-start profile_list">
+                                            <div className="mas-2 me-auto">
+                                                <div className="fw-bold">
+                                                    <LeadingIcon cat={event.category} /> {event.title}
+                                                </div>
+                                            </div>
+                                        </ListGroup.Item>
+                                    )
+                                })}
+                            </ListGroup>
                         </div>
 
                     </Col>

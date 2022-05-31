@@ -45,6 +45,15 @@
     background-color: #a3ceec;
 }
 
+.profile_list {
+    background-color:  #76d7c4;
+    overflow: scroll;
+}
+
+.profile_list:hover {
+    background-color: #FF7F50;
+}
+
 .subNav {
     display: flex;
     justify-content: space-between;

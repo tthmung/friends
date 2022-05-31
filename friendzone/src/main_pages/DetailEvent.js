@@ -74,42 +74,51 @@ export default function DetailEvent(props) {
 
     // Create post request to join an event
     const joinEvent = () => {
-        Axios.post('http://127.0.0.1:8080/api/joinevent',
-            {
+        if (event.email === emailData) {
+            alert("Can't join own event");
+        } else {
+            Axios.post('http://127.0.0.1:8080/api/joinevent',
+                {
+                    id: event.id,
+                    email: emailData,
+                    comment: ''
+                }, { withCredentials: true }).then((response) => {
+                    getSignedUpUsers();
+                    if (response.data.message) {
+                        alert(response.data.message);
+                    }
+                });
+        }
+    }
+
+    // Create post request to leave an event
+    const leaveEvent = () => {
+        if (event.email === emailData) {
+            alert("Can't leave own event");
+        } else {
+            Axios.post('http://127.0.0.1:8080/api/leaveevent', {
                 id: event.id,
-                email: emailData,
-                comment: ''
+                email: emailData
             }, { withCredentials: true }).then((response) => {
                 getSignedUpUsers();
                 if (response.data.message) {
                     alert(response.data.message);
                 }
             });
+        }
     }
 
-    // TODO: Event not joined function
-    // Create post request to leave an event
-    const leaveEvent = () => {
-        Axios.post('http://127.0.0.1:8080/api/leaveevent', {
-            id: event.id,
-            email: emailData
-        }, { withCredentials: true }).then((response) => {
-            if (response.data.message) {
-                alert(response.data.message);
-            }
-        });
-
-        getSignedUpUsers();
-    }
-
-    // TODO: Add already reported function
     // Report an event
     const reportEvent = () => {
-        Axios.post('http://127.0.0.1:8080/api/reportevent', {
-            id: event.id,
-            email: emailData,
-            comment: ''
-        }, { withCredentials: true });
+        if (event.email === emailData) {
+            alert("Can't leave own event");
+        } else {
+            Axios.post('http://127.0.0.1:8080/api/reportevent', {
+                id: event.id,
+                email: emailData,
+                comment: ''
+            }, { withCredentials: true });
+        }
     }
 
     return (
