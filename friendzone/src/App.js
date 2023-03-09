@@ -8,6 +8,7 @@ import Profile from './main_pages/Profile';
 import Post_Event from './main_pages/Post_Event';
 import Notfication from './main_pages/Notification';
 import DetailEvent from './main_pages/DetailEvent';
+import Report from './main_pages/Report';
 
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
         <Route path='/profile' element={<Profile />} />
         <Route path='/postEvent' element={<Post_Event />} />
         <Route path='/Notification' element={<Notfication />} />
+        <Route path='/report' element={<Report />} />
         {events.map((event) => {
           return (
             <Route path={'/main/' + event.id} element={<DetailEvent id={event.id} />} />

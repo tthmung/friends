@@ -7,8 +7,7 @@ import NavigationBar from './Navbar';
 import Badge from 'react-bootstrap/Badge';
 import ListGroup from 'react-bootstrap/ListGroup';
 
-import { Calculator, Controller, Palette, Globe2, SuitClubFill } from "react-bootstrap-icons";
-import { PeopleFill, Building, Activity, Search, FilterCircle } from "react-bootstrap-icons";
+import {Search, FilterCircle } from "react-bootstrap-icons";
 
 import LeadingIcon from "./Component";
 import "./main.css";

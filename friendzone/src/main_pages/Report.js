@@ -4,9 +4,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavigationBar from './Navbar';
 
-export default function Notfication(props) {
+export default function Report(props) {
 
-    // User states
+// User states
     const [userData, setUserData] = useState();
     const [emailData, setEmailData] = useState();
     const [admin, setAdmin] = useState(false);
@@ -40,4 +40,3 @@ export default function Notfication(props) {
         </>
     )
 }
-

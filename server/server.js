@@ -231,7 +231,6 @@ app.post('/api/myevent', async (req, res) => {
   const email = req.body.email;
 
   var result = await db.getMyEvents(email);
-  console.log(result);
   res.send({ result: result });
 });
 
@@ -240,7 +239,6 @@ app.post('/api/joinedevent', async (req, res) => {
   const email = req.body.email;
 
   var result = await db.getJoinedEvent(email);
-  console.log(result);
   res.send({ result: result });
 });
 

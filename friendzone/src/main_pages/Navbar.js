@@ -33,9 +33,9 @@ function NavigationBar(props) {
                     </Navbar.Brand>
 
                 </Container>
-                <Navbar.Collapse href="#notfication" className="justify-content-end">
+                <Navbar.Collapse className="justify-content-end">
                     <Nav>
-                        <Navbar.Brand href="#Notfication">
+                        <Navbar.Brand href="/Notification">
                             <Bell />
                         </Navbar.Brand>
                         <NavDropdown id="collasible-nav-dropdown"
@@ -48,7 +48,7 @@ function NavigationBar(props) {
                             }>
                             <NavDropdown.Item onClick={profilePage}>Profile</NavDropdown.Item>
                             <NavDropdown.Item href="/postEvent">Post Event</NavDropdown.Item>
-                            {props.admin ? <NavDropdown.Item href="#Report">View Report</NavDropdown.Item> : ''}
+                            {props.admin ? <NavDropdown.Item href="/report">View Report</NavDropdown.Item> : ''}
                             <NavDropdown.Divider />
                             <NavDropdown.Item onClick={logout}>Sign Out</NavDropdown.Item>
                         </NavDropdown>
